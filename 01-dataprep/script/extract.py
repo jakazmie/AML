@@ -6,7 +6,7 @@ import h5py
 
 import tensorflow as tf
 from tensorflow.keras.applications import resnet50
-from tensorflow.keras.applications.vgg16 import VGG16
+from tensorflow.keras.applications import vgg16
 
 from tensorflow.keras.preprocessing import image
 from tensorflow.keras.utils import to_categorical
@@ -82,8 +82,8 @@ def create_bottleneck_features():
     #train_generator = ImageGenerator(train_images_dir, resnet50.preprocess_input)
     #valid_generator = ImageGenerator(valid_images_dir, resnet50.preprocess_input)
     
-    train_generator = ImageGenerator(train_images_dir, VGG16.preprocess_input)
-    valid_generator = ImageGenerator(valid_images_dir, VGG16.preprocess_input)
+    train_generator = ImageGenerator(train_images_dir, vgg16.preprocess_input)
+    valid_generator = ImageGenerator(valid_images_dir, vgg16.preprocess_input)
 
     # Create a featurizer
     #featurizer = resnet50.ResNet50(
@@ -92,7 +92,7 @@ def create_bottleneck_features():
     #            include_top = False,
     #            pooling = 'avg')
     
-    featurizer = VGG16.vgg16(
+    featurizer = vgg16.VGG16(
                 weights = 'imagenet', 
                 input_shape=(224,224,3), 
                 include_top = False,
@@ -105,7 +105,7 @@ def create_bottleneck_features():
     labels = train_generator.get_labels()
     
     # Save training dataset to HDF5 file
-    filename = 'aerial_bottleneck_train_vgg16.h5'
+    filename = FLAGS.training_file_name
     output_file = os.path.join(FLAGS.output_data_dir, filename)
     print("Saving training features to {}".format(output_file))
     print("   Training features: ", features.shape)
@@ -120,7 +120,7 @@ def create_bottleneck_features():
     labels = valid_generator.get_labels()
     
     # Save validation dataset to HDF5 file
-    filename = 'aerial_bottleneck_valid_vgg16.h5'
+    filename = FLAGS.validation_file_name
     output_file = os.path.join(FLAGS.output_data_dir, filename)
     print("Saving validation features to {}".format(output_file))
     print("   Validation features: ", features.shape)
@@ -137,7 +137,8 @@ FLAGS = tf.app.flags.FLAGS
 tf.app.flags.DEFINE_integer('batch_size', 64, "Number of images per batch")
 tf.app.flags.DEFINE_string('input_data_dir', 'aerialsmall', "Folder with training and validation images")
 tf.app.flags.DEFINE_string('output_data_dir', 'bottleneck', "A folder for saving bottleneck features")
-
+tf.app.flags.DEFINE_string('training_file_name', 'aerial_bottleneck_train_vgg16.h5', "Name of output training file")
+tf.app.flags.DEFINE_string('validation_file_name', 'aerial_bottleneck_valid_vgg16.h5', "Name of output validation file")
 
 def main(argv=None):
     print("Starting")

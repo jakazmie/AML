@@ -39,8 +39,8 @@ def fcn_classifier(input_shape=(2048,), units=512, classes=6,  l1=0.01, l2=0.01)
 def train_evaluate(run):
    
     print("Loading bottleneck features")
-    train_file_name = os.path.join(FLAGS.data_folder, FLAGS.train_file_name)
-    valid_file_name = os.path.join(FLAGS.data_folder, FLAGS.valid_file_name)
+    train_file_name = os.path.join(FLAGS.data_folder, FLAGS.training_file_name)
+    valid_file_name = os.path.join(FLAGS.data_folder, FLAGS.validation_file_name)
     
     # Load bottleneck training features and labels
     with h5py.File(train_file_name, "r") as hfile:
@@ -54,7 +54,7 @@ def train_evaluate(run):
         valid_labels = np.array(hfile.get('labels'))
         
     # Create a network
-    model = fcn_classifier(input_shape=(2048,), units=FLAGS.units, l1=FLAGS.l1, l2=FLAGS.l2)
+    model = fcn_classifier(input_shape=(512,), units=FLAGS.units, l1=FLAGS.l1, l2=FLAGS.l2)
     
     run_callback = RunCallback(run)
     
@@ -84,8 +84,8 @@ tf.app.flags.DEFINE_integer('units', 512, "Number of epochs to train")
 tf.app.flags.DEFINE_float('l1', 0.01, "l1 regularization")
 tf.app.flags.DEFINE_float('l2', 0.01, "l2 regularization")
 tf.app.flags.DEFINE_string('data_folder', './bottleneck', "Folder with bottleneck features and labels")
-tf.app.flags.DEFINE_string('train_file_name', 'aerial_bottleneck_train.h5', "Training file name")
-tf.app.flags.DEFINE_string('valid_file_name', 'aerial_bottleneck_valid.h5', "Validation file name")
+tf.app.flags.DEFINE_string('training_file_name', 'aerial_bottleneck_train.h5', "Training file name")
+tf.app.flags.DEFINE_string('validation_file_name', 'aerial_bottleneck_valid.h5', "Validation file name")
 
 def main(argv=None):
     # get hold of the current run
