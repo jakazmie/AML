@@ -1,8 +1,6 @@
 
 import os
 import tensorflow as tf
-from tensorflow.keras.applications import resnet50
-from tensorflow.keras.preprocessing import image
 from tensorflow.keras.utils import to_categorical
 from tensorflow.keras.models import Model
 from tensorflow.keras.layers import Dense, GlobalAveragePooling2D, Dropout, Flatten, Input
@@ -71,8 +69,11 @@ def train_evaluate(run):
     print("Training completed.")
     os.makedirs('outputs', exist_ok=True)
     model_file = os.path.join('outputs', 'aerial_classifier.hd5')
-    print("Saving model to: {0}".format(model_file))
+    print("Saving model to: {}".format(model_file))
     model.save(model_file)
+    model_weights = os.path.join('outputs', 'aerial_classifier_weights.hd5')
+    print("Saving weights of the model to {}".format(model_weights))
+    model.save_weights(model_weights, save_format='h5')
     
 
 FLAGS = tf.app.flags.FLAGS
