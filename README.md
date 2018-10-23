@@ -38,18 +38,12 @@ jupyter nbextension install --py --user azureml.train.widgets
 jupyter nbextension enable --py --user azureml.train.widgets
 ```
 
-5. Install TensorFlow
-```
-pip install --upgrade tensorflow
-# pip install --upgrade tensorflow-gpu
-```
-
-6. Clone this repo
+5. Clone this repo
 ```
 git clone <repo URL>
 ```
 
-7. Start Jupyter and enjoy
+6. Start Jupyter and enjoy
 ```
 jupyter notebook
 ```
