@@ -109,4 +109,6 @@ datasets/
 *.hd5
 aml_config/
 script/
+*.zip
+*.pkl
 

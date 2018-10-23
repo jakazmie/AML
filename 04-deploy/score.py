@@ -1,10 +1,13 @@
 import json
 import os
-import tensorflow as tf
-from tensorflow.keras.applications import vgg16
-from tensorflow.keras.preprocessing import image
+import pickle
+from sklearn.externals import joblib
+from sklearn.linear_model import LogisticRegression
 import numpy as np
 import random
+import tensorflow as tf
+from tensorflow.keras.applications import vgg16
+
 from azureml.core.model import Model
 
 def init():
@@ -19,8 +22,9 @@ def init():
     # Load the model
     global model
     # retreive the path to the model file using the model name
-    model_path = Model.get_model_path('aerial_classifier')
-    model = tf.keras.models.load_model(model_path)
+    model_path = Model.get_model_path('aerial_sklearn.pkl')
+    model = joblib.load(model_path)
+  
 
 def run(raw_data):
     # convert json to numpy array
